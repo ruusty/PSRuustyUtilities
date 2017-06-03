@@ -1,0 +1,39 @@
+TOPIC
+    about_Ruusty.ReleaseUtilities
+    
+SHORT DESCRIPTION
+    Cmdlets used to build deliverables.
+           
+LONG DESCRIPTION
+    Cmdlets used to build deliverables includes some Nant like commands
+                 
+    The following cmdlets are included.
+
+    Find-FileUp         Search for a file up the folder tree. Typically used to find configuration files.
+    Get-Version         Generate a Version number
+    Set-Token           Knock off of the the Nant replace token @replaceme@
+    Set-VersionModule   Set the version in a Powershell Module manifest file.
+    Set-VersionAssembly Set the version in AssemblyInfo.cs files.
+    Set-VersionPlSql    Sets a Version number in a Pl/Sql file
+    Set-VersionReadme   Sets the Version and date in a README file
+    Start-Exe           Start an exe with realtime redirection to log file.    
+
+    Get all the cmdlets in  Ruusty.ReleaseUtilities
+    get-module "Ruusty.ReleaseUtilities" | select -expand ExportedCommands
+
+    Get the help
+    $(get-module Ruusty.ReleaseUtilities).ExportedCommands.Keys |% {get-help $_}
+
+
+    $mod = Get-Module -FullyQualifiedName @{ ModuleName = "Ruusty.ReleaseUtilities"; MaximumVersion = "2.0.0.0" }
+
+
+
+    SEE ALSO
+    Online help and updates: 
+            http://example.com
+    GitHub repository      : 
+            https://github.com/
+
+    BitBucket repository      : 
+            https://github.com/

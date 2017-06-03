@@ -1,0 +1,4 @@
+
+The name of the book is @TITLE@ 
+
+@TITLE@ is not a very good book
