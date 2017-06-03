@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project name="GisOms"  >
+    <!--
+    Sets up the global properties used by all the Chocolately Builds on PCA16128
+    Modify for your setup
+    -->
+    <property name="nant.onfailure" value="fail"                    />
+    <property name="props.included" value="true" readonly="true"    />
+
+    <echo message="Including properties GisOms.Chocolately.properties.xml" />
+    <tstamp verbose="true">
+        <formatter property="TODAY"                      pattern="dd MMM yyyy"           />
+        <formatter property="DSTAMP"                     pattern="yyyyMMdd"              />
+        <formatter property="DSTAMP.ISO"                 pattern="yyyy-MM-ddTHH-mm-ss"   />
+        <formatter property="TSTAMP"                     pattern="HHmm"                  />
+        <formatter property="DSTAMP.CHOCO.VERSION"       pattern="yyyy.MM.dd"            />
+    </tstamp>
+
+    <property name="core.directory" value="${project::get-base-directory () }"                                                readonly="true" verbose="true" />
+    <property name="core.build_temp_dir"    value="c:\temp\Build"                                                             readonly="true"  /><!-- Local directory to build in for initially winrar -->
+    <property name="tools.rar"              value="C:\Program Files\WinRAR\Rar.exe"                                           readonly="true"  /><!--  rar  rooted path -->
+    <property name="tools.7zip"             value="C:\Program Files\7-Zip\7z.exe"                                             readonly="true"  /><!--  7zip  rooted path -->
+    <property name="tools.choco"            value="choco.exe"                                                                 readonly="true"  />
+    <property name="git.exe"                value='C:\Program Files\Git\bin\git.exe'                                          readonly="true"  />
+    <property name="fossil.exe"             value='fossil.exe'                                                                readonly="true"  />
+    <property name="compiler.advinstaller"  value="C:\Program Files (x86)\Caphyon\Advanced Installer 11.6.2\bin\x86\AdvancedInstaller.com"       readonly="true"  /><!-- Advanced installer executable rooted path -->
+
+    <property name="git.uri.base" value="//covmwnecod1/OMS_GitHub" readonly="true"   />   <!-- uri to Git repo -->
+
+
+    <property name="buildnumber.filename"   value="GisOms.Build.Number"                                                   />
+    <property name="buildnumber.version"    value="0.0.0.0"                                                               />
+    <property name="buildnumber.major"      value="0"                                                                     />
+    <property name="buildnumber.minor"      value="0"                                                                     />
+    <property name="buildnumber.build"      value="0"                                                                     />
+
+    <property name="GisOms.release.MajorMinor"         value="4.3" readonly="true"  />
+    <property name="GisOms.release.name"               value="GisOms Release ${GisOms.release.MajorMinor}" readonly="true"  />
+    <property name="GisOms.release.StartDate"          value="2012-01-01" readonly="true"  />
+
+    <property name="core.howto.dir"                    value="G:\MKT\DEPT\IT Spatial\OMS GIS\Support 'How To' Instruction"  readonly="true"/> <!-- Top How To Folder -->
+    <property name="core.howto.oms.dir"                value="${path::combine(core.howto.dir,'CHED-OMS43')}"  readonly="true"/>
+    <property name="core.howto.gis.dir"                value="${path::combine(core.howto.dir,'CHED-GIS43')}"  readonly="true"/>
+    <property name="core.howto.chocolatey.dir"         value="${path::combine(core.howto.dir,'Chocolatey')}"  readonly="true"/>
+
+    <property name="core.deliver.iso.path"             value="d:\Build-ISOs"/>                                                                  <!-- build ISO created here Should be a local Drive -->        <!-- Diff -->
+    <property name="core.delivery.dir"                 value="\\covmwnecodp1\delivery"                       readonly="true"/>                  <!-- Top Delivery Folder                                            Diff -->
+    <property name="core.delivery.gisoms.dir"          value="${path::combine(core.delivery.dir,'gisoms')}"  readonly="true"/>                  <!-- built deliverables                                             Diff -->
+    <property name="core.delivery.choco3rdparty.dir"   value="${path::combine(core.delivery.dir,'Choco3rdParty')}"  readonly="true"/>           <!-- 3rd Party Deliverables -->
+
+    <property name="core.delivery.chocoFeed.dir"       value="\\COVMWNECODP1\ChocoPkg" />                                                       <!-- Push the  Chocolatey Packages to here                          Diff -->
+    <property name="global.chocolatey.PackageFeed"     value="${core.delivery.chocoFeed.dir}"  />                                               <!-- Push the  Chocolatey Packages (nupkg) to here Duplicated because of old scripts -->
+
+    <property name="core.PSModulePath"                 value="C:\Program Files\Ched Services\posh\Modules"/>                                    <!-- Where to install PowerShell Modules                              Diff -->
+
+
+</project>
+
