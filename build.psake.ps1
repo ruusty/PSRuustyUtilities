@@ -16,7 +16,15 @@ $me = $MyInvocation.MyCommand.Definition
 filter Skip-Empty { $_ | ?{ $_ -ne $null -and $_ } }
 
 FormatTaskName "`r`n[------{0}------]`r`n"
-Import-Module $(join-path $PSScriptRoot "CmdletRuusty\bin\Release\Ruusty.ReleaseUtilities.dll")
+#need to copy dll to a temp directory
+function New-TemporaryDirectory {
+  $parent = [System.IO.Path]::GetTempPath()
+  [string]$name = [System.Guid]::NewGuid()
+  New-Item -ItemType Directory -Path (Join-Path $parent $name)
+}
+$tempDir = New-TemporaryDirectory;
+Copy-Item -Path $(join-path $PSScriptRoot "CmdletRuusty\bin\Release\Ruusty.ReleaseUtilities.dll") -Destination $tempDir -Verbose 
+Import-Module $(Join-Path $tempDir.FullName Ruusty.ReleaseUtilities.dll )
 
 properties {
   $script:config_vars = @()
@@ -92,9 +100,9 @@ properties {
 }
 
 task default -depends build
-task test-build -depends Show-Settings, clean, git-history, set-version, compile, compile-nupkg
+task test-build -depends Show-Settings, clean,             git-history, set-version, compile, compile-nupkg
 #, distribute
-task build -depends      Show-Settings,git-status,clean, git-history, set-version, compile, tag-version, distribute
+task      build -depends  how-Settings, clean, git-status, git-history, set-version, compile, tag-version, distribute
 
 task clean-dirs {
   if ((Test-Path $ProjBuildPath)) { Remove-Item $ProjBuildPath -Recurse -force }
