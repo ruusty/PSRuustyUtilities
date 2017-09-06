@@ -23,7 +23,7 @@ function New-TemporaryDirectory {
   New-Item -ItemType Directory -Path (Join-Path $parent $name)
 }
 $tempDir = New-TemporaryDirectory;
-Copy-Item -Path $(join-path $PSScriptRoot "CmdletRuusty\bin\Release\Ruusty.ReleaseUtilities.dll") -Destination $tempDir -Verbose 
+Copy-Item -Path $(join-path $PSScriptRoot "CmdletRuusty\bin\Release\Ruusty.ReleaseUtilities.dll") -Destination $tempDir -Verbose
 Import-Module $(Join-Path $tempDir.FullName Ruusty.ReleaseUtilities.dll )
 
 properties {
@@ -101,8 +101,8 @@ properties {
 
 task default -depends build
 task test-build -depends Show-Settings, clean,              git-history, set-version, compile, compile-nupkg
-#, distribute 
-task      build -depends  Show-Settings, clean, git-status, git-history, set-version, compile, tag-version, distribute
+#, distribute
+task      build -depends  Show-Settings, clean, git-status, git-history, set-version, compile, tag-version, distribute-nupkg
 
 task clean-dirs {
   if ((Test-Path $ProjBuildPath)) { Remove-Item $ProjBuildPath -Recurse -force }
