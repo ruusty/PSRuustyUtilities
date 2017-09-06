@@ -100,9 +100,9 @@ properties {
 }
 
 task default -depends build
-task test-build -depends Show-Settings, clean,             git-history, set-version, compile, compile-nupkg
-#, distribute
-task      build -depends  how-Settings, clean, git-status, git-history, set-version, compile, tag-version, distribute
+task test-build -depends Show-Settings, clean,              git-history, set-version, compile, compile-nupkg
+#, distribute 
+task      build -depends  Show-Settings, clean, git-status, git-history, set-version, compile, tag-version, distribute
 
 task clean-dirs {
   if ((Test-Path $ProjBuildPath)) { Remove-Item $ProjBuildPath -Recurse -force }
