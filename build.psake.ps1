@@ -16,7 +16,7 @@ $me = $MyInvocation.MyCommand.Definition
 filter Skip-Empty { $_ | ?{ $_ -ne $null -and $_ } }
 
 FormatTaskName "`r`n[------{0}------]`r`n"
-Import-Module "Ruusty.ReleaseUtilities.dll"
+Import-Module $(join-path $PSScriptRoot "CmdletRuusty\bin\Release\Ruusty.ReleaseUtilities.dll")
 
 properties {
   $script:config_vars = @()
@@ -50,11 +50,11 @@ properties {
   Write-Host $('$GlobalPropertiesPath:{0}' -f $GlobalPropertiesPath)
   $GlobalPropertiesXML = New-Object XML
   $GlobalPropertiesXML.Load($GlobalPropertiesPath)
-  
+
   $GitExe = $GlobalPropertiesXML.SelectNodes("/project/property[@name='git.exe']").value
   $7zipExe = $GlobalPropertiesXML.SelectNodes("/project/property[@name='tools.7zip']").value
   $ChocoExe = $GlobalPropertiesXML.SelectNodes("/project/property[@name='tools.choco']").value
-  
+
   $CoreDeliveryDirectory = $GlobalPropertiesXML.SelectNodes("/project/property[@name='core.delivery.dir']").value
   $CoreChocoFeed = $GlobalPropertiesXML.SelectNodes("/project/property[@name='core.delivery.chocoFeed.dir']").value
   #$CoreDeliveryDirectory = Join-Path $CoreDeliveryDirectory "GisOms"   #todo Change to suite needs
@@ -67,7 +67,7 @@ properties {
   $ProjPackageZipPath = Join-Path $ProjDistPath  "${ProjectName}.zip"
   #$ProjDeliveryPath = Join-Path $(Join-Path $CoreDeliveryDirectory ${ProjectName})  '${versionNum}'
   $ProjDeliveryPath = Join-Path $PSScriptRoot "..\Deploy"
-  
+
   $ProjPackageZipVersionPath = Join-Path $ProjDeliveryPath  '${ProjectName}.${versionNum}.zip'  #Expand dynamically versionNum not set
 
 
@@ -75,9 +75,9 @@ properties {
   $ProjVersionPath = Join-Path $ProjTopdir "${ProjectName}.Build.Number"
   $ProjNuspecPath = Join-Path $ProjTopdir "${ProjectName}.nuspec"
   $ProjNuspecPkgVersionPath = Join-Path $ProjTopdir  '${ProjectName}.${versionNum}.nupkg'
-  
-  $ProjHistorySinceDate ="2015-05-01" 
-  
+
+  $ProjHistorySinceDate ="2015-05-01"
+
   Set-Variable -Name "sdlc" -Description "System Development Lifecycle Environment" -Value "UNKNOWN"
   $zipExe = "7z.exe"
   $zipArgs = 'a -bb2 -tzip "{0}" -ir0@"{1}"' -f $ProjPackageZipPath, $ProjPackageListPath # Get paths from file
@@ -88,7 +88,7 @@ properties {
 
   Write-Host "Verbose: $verbose"
   Write-Verbose "Verbose"
-  
+
 }
 
 task default -depends build
@@ -125,33 +125,33 @@ task compile -description "Build Deliverable zip file" -depends clean, git-histo
   }
   Write-Host "Attempting to get deliverables"
   Copy-Item @copyArgs -verbose:$verbose -ErrorAction Stop
-  
-  
+
+
   Push-Location $ProjBuildPath;
   Write-Host "Attempting Versioning"
   Ruusty.ReleaseUtilities\set-VersionReadme "$ProjBuildPath/README.md"  $version  $now
-  
+
 #  #Version any Packages
 #  $pkgPath = Join-Path $ProjBuildPath "OMS\sql_packages\OMS.PLANNED_OUTAGE.pkb"
 #  Ruusty.PSReleaseUtilities\Set-VersionPlSql $pkgPath $version
-  
+
 #  $plsqlVersionPath = Join-Path $ProjBuildPath "990_Version-pon.oms.sql"
 #  if (Test-Path $plsqlVersionPath )
 #  {
 #    Ruusty.PSReleaseUtilities\Set-Token $plsqlVersionPath 'ProductVersion' $versionNum
 #  }
-  
- 
+
+
   Write-Host "Attempting convert markdown to html"
   import-module -verbose:$verbose md2html; convertto-mdhtml -verbose:$verbose  -recurse
-  
+
   Write-Host "Attempting to create zip file with '$zipArgs'"
-  
+
   start-exe $zipExe -ArgumentList $zipArgs -workingdirectory $ProjBuildPath
   Pop-Location;
-  
+
   Copy-Item "$ProjBuildPath/README.*" $ProjDistPath
-  
+
 }
 
 task compile-nupkg -description "Compile Chocolatey nupkg from nuspec" {
@@ -223,10 +223,10 @@ task git-history -description "Create git history file" {
 task git-status -description "Stop the build if there are any uncommitted changes" {
   $rv = exec { & $GitExe status --short  --porcelain }
   $rv | write-host
-  
+
   #Extras
   #exec { & git.exe ls-files --others --exclude-standard }
-  
+
   if ($rv)
   {
     throw $("Found {0} uncommitted changes" -f ([array]$rv).Count)

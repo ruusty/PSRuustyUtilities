@@ -97,3 +97,8 @@ UpgradeLog*.XML
 
 
 
+/*.nupkg
+/*TempPoint.ps1
+/*.vpw
+/*.vpwhist
+/*.vtg
