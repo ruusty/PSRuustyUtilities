@@ -118,7 +118,7 @@ task msbuild {
   & cmd.exe /c  build.bat
 }
 
-task compile -description "Build Deliverable zip file" -depends clean, git-history, create-dirs, set-versionAssembly, msbuild {
+task compile -description "Build Deliverable zip file" -depends clean, git-history, create-dirs, set-versionAssembly, msbuild, compile-nupkg {
   $versionNum = Get-Content $ProjVersionPath
   $version = [system.Version]::Parse($versionNum)
   $copyArgs = @{
