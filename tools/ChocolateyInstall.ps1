@@ -33,34 +33,3 @@ if(!($psModulePath.Split(';').Contains($installRootDirPath))){
     # make effective in current session
     #$env:PSModulePath = $env:PSModulePath + ";$installModulesDirPath"
 }
-
-
-
-function Install-ChocolateyPowershellModule {
-param(
-  [string] $packageName,
-  [string] $psModuleFullPath,
-  [string] $cmdName
-)
-  Write-Debug "Running 'Install-ChocolateyPowershellCommand' for $packageName with ${psModuleFullPath}:`'$psModuleFullPath`' ";
-
-  try {
-
-    $nugetPath = $env:ChocolateyInstall
-    $nugetExePath = Join-Path $nuGetPath 'bin'
-
-    $packageBatchFileName = Join-Path $nugetExePath "$($cmdName).bat"
-
-    Write-Host "Adding $packageBatchFileName and pointing it to powershell module $psModuleFullPath"
-"@echo off
-powershell -NoProfile -ExecutionPolicy unrestricted import-module -verbose `'$psModuleFullPath`'; convertto-mdhtml %* -verbose"| Out-File $packageBatchFileName -encoding ASCII
-
-  } catch {
-    throw $_.Exception
-  }
-}
-
-
-Install-ChocolateyPowershellModule -packageName $env:chocolateyPackageName -psModuleFullPath $(join-path $installRootDirPath $moduleName) -cmdName "md2html"
-
-
