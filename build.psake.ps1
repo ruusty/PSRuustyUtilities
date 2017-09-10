@@ -124,9 +124,10 @@ task compile -description "Build Deliverable zip file" -depends clean  {
     path  = @("$ProjTopdir\README.md", $ProjHistoryPath, $ProjVersionPath,
       "CmdletRuusty\bin\Release\Ruusty.ReleaseUtilities.xml",
       "CmdletRuusty\bin\Release\Ruusty.ReleaseUtilities.dll",
-      "CmdletRuusty\about_Ruusty.ReleaseUtilities.help.txt"
+      "CmdletRuusty\about_Ruusty.ReleaseUtilities.help.txt",
+      "Specification\CmdletRuusty.Tests.ps1"
       ) # TODO
-    exclude = @("*.log", "*.html", "*.credential", "*.TempPoint.psd1", "*.TempPoint.ps1", "*.Tests.ps1")
+    exclude = @("*.log", "*.html", "*.credential", "*.TempPoint.psd1", "*.TempPoint.ps1")
     destination = $(Join-Path $ProjBuildPath "Ruusty.ReleaseUtilities")
     recurse = $true
   }

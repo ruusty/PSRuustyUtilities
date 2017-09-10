@@ -1,11 +1,11 @@
-# PSRuustyReleaseUtilities #
+# Ruusty.ReleaseUtilities #
 
 ~~~
-Project:        Ruusty Tools
+Project:        Ruusty Release Tools
 Product:        PSRuustyUtilities
 Version:        4.3
 Date:           2017-08-16
-Description:    PSRuustyUtilities
+Description:    Powershell binary cmdlet contains tools for building releases.
 ~~~
 
 
@@ -18,14 +18,13 @@ Description:    PSRuustyUtilities
 ## Description [&uarr;](#TOC) ##
 
 
-Chocolatey Package **PSRuustyUtilities** which installs Powershell binary module 
-`Ruusty.ReleaseUtilities`
+Chocolatey Package **PSRuustyUtilities**  installs Powershell binary module `Ruusty.ReleaseUtilities`
+
+To get help and examples
 
 ~~~
-Import-module Ruusty.Utilities
-get-module "Ruusty.Utilities" | select -expand ExportedCommands
-$(get-module Ruusty.Utilities).ExportedCommands.Keys |% {get-help $_}
-
+import-module Ruusty.ReleaseUtilities
+get-module "Ruusty.ReleaseUtilities" | select -expand ExportedCommands
+$(get-module Ruusty.ReleaseUtilities).ExportedCommands.Keys |% {get-help $_}
 ~~~
-
 
