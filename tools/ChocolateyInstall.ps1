@@ -1,4 +1,3 @@
-  #Installer
 write-host chocolateyPackageFolder  =$env:chocolateyPackageFolder
 write-host chocolateyPackageName    =$env:chocolateyPackageName
 write-host chocolateyPackageVersion =$env:chocolateyPackageVersion

@@ -100,9 +100,8 @@ properties {
 }
 
 task default -depends build
-task test-build -depends Show-Settings, clean,              git-history, set-version, compile, compile-nupkg
-#, distribute
-task      build -depends  Show-Settings, clean, git-status, git-history, set-version, compile, tag-version, distribute-nupkg
+task test-build -depends Show-Settings, clean,             create-dirs, git-history, set-version, msbuild,compile, compile-nupkg
+task      build -depends Show-Settings, clean, git-status, create-dirs, git-history, set-version, msbuild,compile, compile-nupkg, tag-version, distribute-nupkg
 
 task clean-dirs {
   if ((Test-Path $ProjBuildPath)) { Remove-Item $ProjBuildPath -Recurse -force }
@@ -114,11 +113,11 @@ task create-dirs {
   if (!(Test-Path $ProjDistPath))  { mkdir -Path $ProjDistPath }
 }
 
-task msbuild {
+task msbuild -depends set-versionAssembly {
   & cmd.exe /c  build.bat
 }
 
-task compile -description "Build Deliverable zip file" -depends clean, git-history, create-dirs, set-versionAssembly, msbuild, compile-nupkg {
+task compile -description "Build Deliverable zip file" -depends clean  {
   $versionNum = Get-Content $ProjVersionPath
   $version = [system.Version]::Parse($versionNum)
   $copyArgs = @{
@@ -128,34 +127,24 @@ task compile -description "Build Deliverable zip file" -depends clean, git-histo
       "CmdletRuusty\about_Ruusty.ReleaseUtilities.help.txt"
       ) # TODO
     exclude = @("*.log", "*.html", "*.credential", "*.TempPoint.psd1", "*.TempPoint.ps1", "*.Tests.ps1")
-    destination = $ProjBuildPath
+    destination = $(Join-Path $ProjBuildPath "Ruusty.ReleaseUtilities")
     recurse = $true
   }
+  mkdir -Path $copyArgs.destination
   Write-Host "Attempting to get deliverables"
   Copy-Item @copyArgs -verbose:$verbose -ErrorAction Stop
-
-
-  Push-Location $ProjBuildPath;
-  Write-Host "Attempting Versioning"
-  Ruusty.ReleaseUtilities\set-VersionReadme "$ProjBuildPath/README.md"  $version  $now
-
-#  #Version any Packages
-#  $pkgPath = Join-Path $ProjBuildPath "OMS\sql_packages\OMS.PLANNED_OUTAGE.pkb"
-#  Ruusty.PSReleaseUtilities\Set-VersionPlSql $pkgPath $version
-
-#  $plsqlVersionPath = Join-Path $ProjBuildPath "990_Version-pon.oms.sql"
-#  if (Test-Path $plsqlVersionPath )
-#  {
-#    Ruusty.PSReleaseUtilities\Set-Token $plsqlVersionPath 'ProductVersion' $versionNum
-#  }
-
+  
+  
+  Push-Location $copyArgs.destination;
+  Write-Host "Attempting Versioning in $(${copyArgs}.destination)"
+  Ruusty.ReleaseUtilities\set-VersionReadme "$(${copyArgs}.destination)/README.md"  $version  $now
 
   Write-Host "Attempting convert markdown to html"
   import-module -verbose:$verbose md2html; convertto-mdhtml -verbose:$verbose  -recurse
 
   Write-Host "Attempting to create zip file with '$zipArgs'"
-
-  start-exe $zipExe -ArgumentList $zipArgs -workingdirectory $ProjBuildPath
+  
+  Ruusty.ReleaseUtilities\start-exe $zipExe -ArgumentList $zipArgs -workingdirectory $ProjBuildPath
   Pop-Location;
 
   Copy-Item "$ProjBuildPath/README.*" $ProjDistPath
