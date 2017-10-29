@@ -1,5 +1,7 @@
-setlocal
-call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\VsMSBuildCmd.bat"
-msbuild CmdletRuusty.sln /t:CmdletRuusty:Clean;CmdletRuusty:Rebuild /p:Configuration=Release /p:Platform="Any CPU"
-timeout /t 5
+@rem Build a release
+@setlocal
+cd /d %~dp0
+call psake build.psake.ps1 -properties "@{verbose=$False;VerbosePreference='SilentlyContinue';DebugPreference='SilentlyContinue'}" build
+@pause
 endlocal
+

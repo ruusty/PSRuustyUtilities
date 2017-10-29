@@ -39,10 +39,19 @@
         </exec>
     </target>
 
+    <target name="clean" description="Remove the Build  and Dist folders">
+        <exec program="cmd.exe" verbose="true" workingdir="${proj.topdir}" failonerror="true">
+            <arg line="/C"/>
+            <arg line="psake"/>
+            <arg line="build.psake.ps1"/>
+            <arg line="clean"/>
+        </exec>
+    </target>
+
 
 
     <target name="help" description="Help descriptions">
-        <echo message="Compiles ${proj.build.name} to a package with versioning"/>
+        <echo message="Compiles ${proj.topdir} to a package with versioning"/>
         <echo message='nant -buildfile:"${project::get-buildfile-path()}" -projecthelp'/>
         <exec program="nant" workingdir="${proj.topdir}">
             <arg line='-buildfile:"${project::get-buildfile-path()}" -projecthelp'/>
