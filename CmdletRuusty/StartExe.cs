@@ -91,19 +91,6 @@ namespace Ruusty.PSUtilities
         {//process each item in the pipeline
             try
             {
-                /*
-                task = Task.Factory.StartNew(() =>
-               {
-                   Console.WriteLine("Task Starting");
-                   for (int count = 0; count < 10; count++)
-                   {
-                       Thread.Sleep(1000);
-                       Console.WriteLine("Task count is " + count);
-                   }
-                   Start(FilePath, args, WorkingDirectory, LogPath);
-
-               });
-                */
 
                 task = Task<int>.Factory.StartNew(() =>
                 {
