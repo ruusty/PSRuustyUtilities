@@ -6,16 +6,17 @@
     <title>PSRuustyUtilities</title>
     <authors>Ruusty</authors>
     <owners>Ruusty</owners>
-    <projectUrl>http://example.com</projectUrl>
+    <projectUrl>https://bitbucket.org/ruusty/psruustyutilities/src/master/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>PowerShell module to </summary>
 
     <description>Powershell Module Cmdlets to build,version deliverables. Includes some Nant like commands
     </description>
-    <copyright>Copyright (c) 2017, All rights reserved.</copyright>
-    <tags> powershell build</tags>
+    <copyright>Copyright (c) 2019, All rights reserved.</copyright>
+    <tags>powershell build</tags>
   </metadata>
   <files>
+    <file target="tools" src="tools\ChocolateyBeforeModify.ps1" />
     <file target="tools" src="tools\ChocolateyInstall.ps1" />
     <file target="tools" src="tools\ChocolateyUninstall.ps1" />
     <file target="tools" src="tools\properties.ps1" />

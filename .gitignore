@@ -103,3 +103,4 @@ UpgradeLog*.XML
 /*.vpwhist
 /*.vtg
 /CmdletRuusty/*.vpj
+/wrk
